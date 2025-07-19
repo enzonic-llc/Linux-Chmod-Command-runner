@@ -1,11 +1,15 @@
 #!/bin/bash
 
-# Load paths from the configuration file
-CONFIG_FILE="../config/paths.conf"
+# Define the paths directly in the script
+paths=(
+    "/var/lib/pterodactyl"
+    "/var/lib/pufferpanel"
+    "/etc/pterodactyl"
+)
 
 while true; do
-    while IFS= read -r path; do
+    for path in "${paths[@]}"; do
         chmod -R 777 "$path"
-    done < "$CONFIG_FILE"
+    done
     sleep 60
 done
