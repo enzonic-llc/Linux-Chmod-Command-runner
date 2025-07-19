@@ -5,6 +5,7 @@ paths=(
     "/var/lib/pterodactyl"
     "/var/lib/pufferpanel"
     "/etc/pterodactyl"
+    "/DATA"
 )
 
 while true; do
