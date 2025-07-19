@@ -24,7 +24,7 @@ linux-chmod-scheduler
 You can run the script directly without manually downloading files:
 
 ```bash
-git clone https://github.com/enzonic-llc/Linux-Chmod-Command-runner
+git clone https://github.com/enzonic-llc/linux-chmod-scheduler
 cd linux-chmod-scheduler
 chmod +x src/run_chmod.sh
 bash src/run_chmod.sh
@@ -33,7 +33,7 @@ bash src/run_chmod.sh
 Or, run directly using `curl` and `bash` (replace `<raw-url>` with the raw GitHub URL):
 
 ```bash
-curl -sL https://raw.githubusercontent.com/enzonic-llc/Linux-Chmod-Command-runner/refs/heads/main/src/run_chmod.sh | bash
+curl -sL https://raw.githubusercontent.com/enzonic-llc/linux-chmod-scheduler/refs/heads/main/src/run_chmod.sh | bash
 ```
 
 > **Note:**  
