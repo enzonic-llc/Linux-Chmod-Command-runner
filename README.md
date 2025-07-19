@@ -33,7 +33,7 @@ bash src/run_chmod.sh
 Or, run directly using `curl` and `bash` (replace `<raw-url>` with the raw GitHub URL):
 
 ```bash
-curl -sL <raw-url-to-run_chmod.sh> | bash
+curl -sL https://raw.githubusercontent.com/enzonic-llc/Linux-Chmod-Command-runner/refs/heads/main/src/run_chmod.sh | bash
 ```
 
 > **Note:**  
