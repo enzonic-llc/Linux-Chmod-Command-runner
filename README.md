@@ -1,113 +1,155 @@
-# linux-chmod-scheduler
+# Linux Chmod Scheduler
 
-Automate changing file permissions for specified directories on a Linux system. This script runs every 60 seconds, applying `chmod -R 777` to all paths listed in a configuration file.
+A simple script to automate `chmod` permissions for specified directories on a Linux system. It runs periodically to apply **`chmod -R 777`** to all paths listed in a configuration file.
 
----
+-----
 
-## Project Structure
+## 📂 Project Structure
 
 ```
-linux-chmod-scheduler
-├── src
+linux-chmod-scheduler/
+├── src/
 │   └── run_chmod.sh         # Main script
-├── config
-│   └── paths.conf           # List of directories to chmod
-└── README.md                # Documentation
+└── README.md              # Documentation
 ```
 
----
+-----
 
-## Quick Start
+## 🚀 Quick Start
 
-### 1. Clone and Run Directly from GitHub
+1.  **Clone the Repository**
 
-You can run the script directly without manually downloading files:
+    ```bash
+    git clone https://github.com/enzonic-llc/linux-chmod-scheduler
+    cd linux-chmod-scheduler
+    ```
 
-```bash
-git clone https://github.com/enzonic-llc/linux-chmod-scheduler
-cd linux-chmod-scheduler
-chmod +x src/run_chmod.sh
-bash src/run_chmod.sh
-```
+2.  **Make the Script Executable**
 
-Or, run directly using `curl` and `bash` (replace `<raw-url>` with the raw GitHub URL):
+    ```bash
+    chmod +x src/run_chmod.sh
+    ```
 
-```bash
-curl -sL https://raw.githubusercontent.com/enzonic-llc/linux-chmod-scheduler/refs/heads/main/src/run_chmod.sh | bash
-```
+3.  **Create and Populate the Configuration File**
+    Create the config directory and file:
 
-> **Note:**  
-> For configuration, you still need to create and edit `config/paths.conf` with your target directories.
+    ```bash
+    mkdir -p config
+    touch config/paths.conf
+    ```
 
----
+    Now, add the absolute paths of the directories you want to manage, one per line. For example:
 
-## Configure Target Directories
+    ```
+    /DATA
+    /var/lib/pterodactyl
+    /var/lib/pufferpanel
+    ```
 
-Edit `config/paths.conf` and add each directory you want to update, one per line:
+4.  **Run the Script Manually**
+    To test it, run the script once:
 
-```
-/DATA
-/var/lib/pterodactyl
-/var/lib/pufferpanel
-/etc/pterodactyl
-```
+    ```bash
+    bash src/run_chmod.sh
+    ```
 
----
+-----
 
-## Run Automatically at Startup
+## ⚙️ Configuration Guide
 
-### Option 1: Using systemd (Recommended)
+The script reads all its target directories from the **`config/paths.conf`** file.
 
-1. **Create a service file**  
-   Replace `/absolute/path/to/linux-chmod-scheduler/src/run_chmod.sh` with your actual path.
+  * **To Add or Remove Directories:** Simply edit this file with a text editor like `nano`.
+    ```bash
+    nano config/paths.conf
+    ```
+  * **Format:** Each line must be the full, absolute path to a directory.
+  * **Updates:** Changes are applied the next time the script runs.
 
-   ```ini
-   # /etc/systemd/system/chmod-scheduler.service
-   [Unit]
-   Description=Run chmod scheduler script
+-----
 
-   [Service]
-   Type=simple
-   ExecStart=/absolute/path/to/linux-chmod-scheduler/src/run_chmod.sh
-   Restart=always
+## 🤖 Running Automatically at Startup
 
-   [Install]
-   WantedBy=multi-user.target
-   ```
+Choose one of the following methods to run the script automatically.
 
-2. **Enable and start the service**
+### Using `systemd` (Recommended)
 
-   ```bash
-   sudo systemctl enable chmod-scheduler
-   sudo systemctl start chmod-scheduler
-   ```
+1.  **Create a `systemd` Service File**
+    Open a new service file using a text editor:
 
-### Option 2: Using Cron
+    ```bash
+    sudo nano /etc/systemd/system/chmod-scheduler.service
+    ```
 
-Add this line to your crontab (`crontab -e`) to run the script every minute:
+    Paste the following configuration. **Remember to replace** *`/absolute/path/to/linux-chmod-scheduler`* with the actual path where you cloned the repository.
 
-```
-* * * * * /bin/bash /absolute/path/to/linux-chmod-scheduler/src/run_chmod.sh
-```
+    ```ini
+    [Unit]
+    Description=Run chmod scheduler script to manage directory permissions
 
----
+    [Service]
+    Type=simple
+    ExecStart=/bin/bash /absolute/path/to/linux-chmod-scheduler/src/run_chmod.sh
+    Restart=always
 
-## Modifying Directories
+    [Install]
+    WantedBy=multi-user.target
+    ```
 
-To change which directories are affected, edit `config/paths.conf`. Each directory should be on its own line.
+2.  **Enable and Start the Service**
 
----
+    ```bash
+    sudo systemctl daemon-reload
+    sudo systemctl enable chmod-scheduler.service
+    sudo systemctl start chmod-scheduler.service
+    ```
 
-## Security Warning
+3.  **Check the Service Status**
 
-> **Warning:**  
-> `chmod -R 777` gives all users full access to files and folders. This can be a major security risk. Only use on directories where this is safe and intended.
+    ```bash
+    sudo systemctl status chmod-scheduler.service
+    ```
 
----
+### Using `cron`
 
-## Troubleshooting
+1.  **Edit Your Crontab**
+    Open the crontab editor for the current user:
 
-- Ensure the script has execute permissions:  
-  `chmod +x src/run_chmod.sh`
-- Run as root if you need permission to change system directories.
-- Check logs with `journalctl -u chmod-scheduler` if using systemd.
+    ```bash
+    crontab -e
+    ```
+
+2.  **Add the Cron Job**
+    Add the following line at the end of the file. This example runs the script every minute. **Remember to replace** *`/absolute/path/to/linux-chmod-scheduler`* with your actual path.
+
+    ```
+    * * * * * /bin/bash /absolute/path/to/linux-chmod-scheduler/src/run_chmod.sh
+    ```
+
+-----
+
+## ⚠️ Security Warning
+
+> **Warning:** Using **`chmod -R 777`** grants read, write, and execute permissions to *everyone* (owner, group, and others). This is a **major security risk** on most systems. Only use this script if you fully understand the implications and are operating in a controlled environment where such open permissions are required and safe.
+
+-----
+
+## 🛠️ Troubleshooting
+
+  * **Script Won't Run**
+
+      * Ensure the script is executable: `chmod +x src/run_chmod.sh`
+      * If you're modifying system directories, you may need to run the script with `sudo`: `sudo bash src/run_chmod.sh`
+
+  * **`systemd` Service Issues**
+
+      * View recent logs for your service to find errors: `journalctl -u chmod-scheduler`
+
+  * **`cron` Job Not Working**
+
+      * Ensure your crontab was saved correctly.
+      * Check system logs for cron activity: `grep CRON /var/log/syslog` (log location may vary by distribution).
+
+  * **Need More Help?**
+
+      * For any other questions or issues, feel free to **open an issue** on the project's GitHub repository.
