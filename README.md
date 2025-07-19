@@ -53,21 +53,6 @@ linux-chmod-scheduler/
     bash src/run_chmod.sh
     ```
 
------
-
-## ⚙️ Configuration Guide
-
-The script reads all its target directories from the **`config/paths.conf`** file.
-
-  * **To Add or Remove Directories:** Simply edit this file with a text editor like `nano`.
-    ```bash
-    nano config/paths.conf
-    ```
-  * **Format:** Each line must be the full, absolute path to a directory.
-  * **Updates:** Changes are applied the next time the script runs.
-
------
-
 ## 🤖 Running Automatically at Startup
 
 Choose one of the following methods to run the script automatically.
