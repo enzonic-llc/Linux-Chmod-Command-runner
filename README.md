@@ -30,23 +30,7 @@ linux-chmod-scheduler/
     chmod +x src/run_chmod.sh
     ```
 
-3.  **Create and Populate the Configuration File**
-    Create the config directory and file:
-
-    ```bash
-    mkdir -p config
-    touch config/paths.conf
-    ```
-
-    Now, add the absolute paths of the directories you want to manage, one per line. For example:
-
-    ```
-    /DATA
-    /var/lib/pterodactyl
-    /var/lib/pufferpanel
-    ```
-
-4.  **Run the Script Manually**
+3.  **Run the Script Manually**
     To test it, run the script once:
 
     ```bash
@@ -74,7 +58,7 @@ Choose one of the following methods to run the script automatically.
 
     [Service]
     Type=simple
-    ExecStart=/bin/bash /absolute/path/to/linux-chmod-scheduler/src/run_chmod.sh
+    ExecStart=/bin/bash /linux-chmod-scheduler/src/run_chmod.sh
     Restart=always
 
     [Install]
