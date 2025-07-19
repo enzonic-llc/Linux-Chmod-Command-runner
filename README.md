@@ -24,7 +24,7 @@ linux-chmod-scheduler
 You can run the script directly without manually downloading files:
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/enzonic-llc/Linux-Chmod-Command-runner
 cd linux-chmod-scheduler
 chmod +x src/run_chmod.sh
 bash src/run_chmod.sh
